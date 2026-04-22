@@ -28,5 +28,5 @@ git am --signoff < ~/holiday_patches/hardware_qcom_display-caf/0003-gralloc-Fix-
 cd ../media-caf
 echo "Applying patches to hardware/qcom/media-caf"
 git am --signoff < ~/holiday_patches/hardware_qcom_media-caf/0001-venc-Disable-ION-when-BOARD_USES_PMEM_ADSP-is-enable.patch
-git am --signoff < ~/holiday_patches/hardware_qcom_media-caf/0002-venc-Fix-compilation-when-ION-is-disabled.patc
+git am --signoff < ~/holiday_patches/hardware_qcom_media-caf/0002-venc-Fix-compilation-when-ION-is-disabled.patch
 cd ../../../
