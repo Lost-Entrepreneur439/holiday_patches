@@ -1,0 +1,26 @@
+From 0c4eb8dde2aaf64a85e1c75e0ac4f2c58105cff6 Mon Sep 17 00:00:00 2001
+From: Matt Filetto <matt.filetto@gmail.com>
+Date: Sun, 17 Mar 2013 22:05:45 -0700
+Subject: [PATCH 2/6] Allow building with linaro Cortex-A8 iptimized toolchain
+
+Change-Id: I33ba135ea772b31fe0a8d2c36c8e99b5f0fdbd62
+---
+ core/tasks/kernel.mk | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/core/tasks/kernel.mk b/core/tasks/kernel.mk
+index f62e0625..7ae85541 100644
+--- a/core/tasks/kernel.mk
++++ b/core/tasks/kernel.mk
+@@ -164,7 +164,7 @@ ifeq ($(TARGET_ARCH),arm)
+         ifeq ($(HOST_OS),darwin)
+             ARM_CROSS_COMPILE:=CROSS_COMPILE="$(ccache) $(ANDROID_BUILD_TOP)/prebuilt/darwin-x86/toolchain/$(TARGET_KERNEL_CUSTOM_TOOLCHAIN)/bin/arm-eabi-"
+         else
+-            ARM_CROSS_COMPILE:=CROSS_COMPILE="$(ccache) $(ANDROID_BUILD_TOP)/prebuilt/linux-x86/toolchain/$(TARGET_KERNEL_CUSTOM_TOOLCHAIN)/bin/arm-eabi-"
++            ARM_CROSS_COMPILE:=CROSS_COMPILE="$(ccache) $(ANDROID_BUILD_TOP)/prebuilt/linux-x86/toolchain/$(TARGET_KERNEL_CUSTOM_TOOLCHAIN)/bin/arm-cortex_a8-linux-gnueabi-"
+         endif
+     else
+         ARM_CROSS_COMPILE:=CROSS_COMPILE="$(ccache) $(ARM_EABI_TOOLCHAIN)/arm-eabi-"
+-- 
+2.53.0
+

@@ -1,0 +1,33 @@
+From e125b60f21a33f48b2958592306e47fcdab7ba73 Mon Sep 17 00:00:00 2001
+From: Matt Filetto <matt.filetto@gmail.com>
+Date: Tue, 14 May 2013 13:56:48 -0700
+Subject: [PATCH 4/6] build: Fallback to "arm-eabi-" if
+ TARGET_KERNEL_CUSTOM_TOOLCHAIN_SUFFIX is not set
+
+Change-Id: I8be1af2b0b9d03bfbef0483f2591ca8ef100a6c2
+---
+ core/tasks/kernel.mk | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/core/tasks/kernel.mk b/core/tasks/kernel.mk
+index 977b5c95..edec0d11 100644
+--- a/core/tasks/kernel.mk
++++ b/core/tasks/kernel.mk
+@@ -162,9 +162,13 @@ ifeq ($(TARGET_ARCH),arm)
+     endif
+     ifneq ($(TARGET_KERNEL_CUSTOM_TOOLCHAIN),)
+         ifeq ($(HOST_OS),darwin)
+-            ARM_CROSS_COMPILE:=CROSS_COMPILE="$(ccache) $(ANDROID_BUILD_TOP)/prebuilt/darwin-x86/toolchain/$(TARGET_KERNEL_CUSTOM_TOOLCHAIN)/bin/$(TARGET_KERNEL_CUSTOM_TOOLCHAIN_SUFFIX)-"
++            ARM_CROSS_COMPILE:=CROSS_COMPILE="$(ccache) $(ANDROID_BUILD_TOP)/prebuilt/darwin-x86/toolchain/$(TARGET_KERNEL_CUSTOM_TOOLCHAIN)/bin/arm-eabi-"
+         else
++      ifneq ($(TARGET_KERNEL_CUSTOM_TOOLCHAIN_SUFFIX),)
+             ARM_CROSS_COMPILE:=CROSS_COMPILE="$(ccache) $(ANDROID_BUILD_TOP)/prebuilt/linux-x86/toolchain/$(TARGET_KERNEL_CUSTOM_TOOLCHAIN)/bin/$(TARGET_KERNEL_CUSTOM_TOOLCHAIN_SUFFIX)-"
++          else
++            ARM_CROSS_COMPILE:=CROSS_COMPILE="$(ccache) $(ANDROID_BUILD_TOP)/prebuilt/linux-x86/toolchain/$(TARGET_KERNEL_CUSTOM_TOOLCHAIN)/bin/arm-eabi-"
++          endif
+         endif
+     else
+         ARM_CROSS_COMPILE:=CROSS_COMPILE="$(ccache) $(ARM_EABI_TOOLCHAIN)/arm-eabi-"
+-- 
+2.53.0
+

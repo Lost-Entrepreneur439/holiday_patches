@@ -1,0 +1,69 @@
+From 8f6a74e8a0e255ce661c810693eb2bc5778425b3 Mon Sep 17 00:00:00 2001
+From: Ross Squires <ross.squires@gmail.com>
+Date: Wed, 11 Sep 2013 16:45:52 -0400
+Subject: [PATCH] Fix for phones that do not support
+ RIL_REQUEST_DATA_REGISTRATION_STATE
+
+Some older phones do not support reporting data registration status
+via RIL_REQUEST_DATA_REGISTRATION_STATE. Instead, this fix allows them
+to report via RIL_REQUEST_VOICE_REGISTRATION_STATE.
+
+PS2: added missing brackets
+PS3: added back !mIsSubscriptionFromRuim to if statement
+PS4: changed to proper naming scheme and removed duplicate method
+
+Change-Id: Ifc546256d2af26f4d9e372d66d6a4a557033af69
+---
+ .../cdma/CdmaServiceStateTracker.java         | 19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
+ mode change 100644 => 100755 src/java/com/android/internal/telephony/cdma/CdmaServiceStateTracker.java
+
+diff --git a/src/java/com/android/internal/telephony/cdma/CdmaServiceStateTracker.java b/src/java/com/android/internal/telephony/cdma/CdmaServiceStateTracker.java
+old mode 100644
+new mode 100755
+index c640a57..a8f22b5
+--- a/src/java/com/android/internal/telephony/cdma/CdmaServiceStateTracker.java
++++ b/src/java/com/android/internal/telephony/cdma/CdmaServiceStateTracker.java
+@@ -509,7 +509,7 @@ public class CdmaServiceStateTracker extends ServiceStateTracker {
+         mIsSubscriptionFromRuim =
+             (newSubscriptionSource == CdmaSubscriptionSourceManager.SUBSCRIPTION_FROM_RUIM);
+         saveCdmaSubscriptionSource(newSubscriptionSource);
+-        if (!mIsSubscriptionFromRuim) {
++        if (!mIsSubscriptionFromRuim || mCi.needsOldRilFeature("skipdatareg")) {
+             // NV is ready when subscription source is NV
+             sendMessage(obtainMessage(EVENT_NV_READY));
+         } else {
+@@ -684,6 +684,13 @@ public class CdmaServiceStateTracker extends ServiceStateTracker {
+                 mCdmaRoaming = regCodeIsRoaming(registrationState);
+                 mNewSS.setState (regCodeToServiceState(registrationState));
+                 mNewSS.setRilVoiceRadioTechnology(radioTechnology);
++
++
++                if (mCi.needsOldRilFeature("skipdatareg")) {
++                    mNewSS.setDataRegState(radioTechnologyToDataServiceState(radioTechnology));
++                    mNewSS.setRilDataRadioTechnology(radioTechnology);
++                }
++
+                 mNewSS.setCssIndicator(cssIndicator);
+                 mNewSS.setSystemAndNetworkId(systemId, networkId);
+                 mRoamingIndicator = roamingIndicator;
+@@ -919,10 +926,12 @@ public class CdmaServiceStateTracker extends ServiceStateTracker {
+             mCi.getVoiceRegistrationState(
+                     obtainMessage(EVENT_POLL_STATE_REGISTRATION_CDMA, mPollingContext));
+ 
+-            mPollingContext[0]++;
+-            // RIL_REQUEST_DATA_REGISTRATION_STATE
+-            mCi.getDataRegistrationState(obtainMessage(EVENT_POLL_STATE_GPRS,
+-                                        mPollingContext));
++            if (mIsSubscriptionFromRuim) {
++                mPollingContext[0]++;
++                // RIL_REQUEST_DATA_REGISTRATION_STATE
++                mCi.getDataRegistrationState(obtainMessage(EVENT_POLL_STATE_GPRS,
++                                            mPollingContext));
++            }
+             break;
+         }
+     }
+-- 
+2.53.0
+

@@ -1,0 +1,39 @@
+From 7b372136d50fb52a4093ae276c455448e90afb6d Mon Sep 17 00:00:00 2001
+From: Sultanxda <sultanxda@gmail.com>
+Date: Mon, 17 Feb 2014 17:38:17 -0800
+Subject: [PATCH 3/3] gralloc: Fix PMEM heap allocation for 3.0 kernels
+
+This is needed for PMEM camera libraries.
+
+Symptoms: gralloc gives an error saying invalid argument to map /dev/pmem_adsp, and dmesg says that ION is trying to mmap it. This issue is likely being caused by the ION drivers in the 3.0 kernel as this issue does not exist with 3.4 kernels.
+
+Signed-off-by: Sultanxda <sultanxda@gmail.com>
+
+Edit by dastin1015: don't remove features for working devices, but rather ifdef the code out
+---
+ libgralloc/mapper.cpp | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/libgralloc/mapper.cpp b/libgralloc/mapper.cpp
+index cfe6dbf..06ecdaf 100644
+--- a/libgralloc/mapper.cpp
++++ b/libgralloc/mapper.cpp
+@@ -74,6 +74,7 @@ static int gralloc_map(gralloc_module_t const* module,
+         }
+ 
+         hnd->base = intptr_t(mappedAddress) + hnd->offset;
++#ifndef USE_PMEM_ADSP
+         mappedAddress = MAP_FAILED;
+         size = ROUND_UP_PAGESIZE(sizeof(MetaData_t));
+         err = memalloc->map_buffer(&mappedAddress, size,
+@@ -85,6 +86,7 @@ static int gralloc_map(gralloc_module_t const* module,
+             return -errno;
+         }
+         hnd->base_metadata = intptr_t(mappedAddress) + hnd->offset_metadata;
++#endif
+     }
+     return 0;
+ }
+-- 
+2.53.0
+

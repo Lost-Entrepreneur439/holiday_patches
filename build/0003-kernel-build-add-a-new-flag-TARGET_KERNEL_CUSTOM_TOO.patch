@@ -1,0 +1,35 @@
+From c8bcd3ec975b3c7c8347872a91bfeb2f92eb6aa1 Mon Sep 17 00:00:00 2001
+From: Matt Filetto <matt.filetto@gmail.com>
+Date: Mon, 13 May 2013 23:27:40 -0700
+Subject: [PATCH 3/6] kernel build: add a new flag
+ $(TARGET_KERNEL_CUSTOM_TOOLCHAIN_SUFFIX
+
+Used to define the name of the binaries used to compile. Usually this is arm-eabi but with
+custom toolchains this sometimes needs to be changed. Allow that to be done.
+
+Must be used in conjunction with TARGET_KERNEL_CUSTOM_TOOLCHAIN
+
+Change-Id: I4d6850c96573b5959dc421e0049c9fb7e88db105
+---
+ core/tasks/kernel.mk | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/core/tasks/kernel.mk b/core/tasks/kernel.mk
+index 7ae85541..977b5c95 100644
+--- a/core/tasks/kernel.mk
++++ b/core/tasks/kernel.mk
+@@ -162,9 +162,9 @@ ifeq ($(TARGET_ARCH),arm)
+     endif
+     ifneq ($(TARGET_KERNEL_CUSTOM_TOOLCHAIN),)
+         ifeq ($(HOST_OS),darwin)
+-            ARM_CROSS_COMPILE:=CROSS_COMPILE="$(ccache) $(ANDROID_BUILD_TOP)/prebuilt/darwin-x86/toolchain/$(TARGET_KERNEL_CUSTOM_TOOLCHAIN)/bin/arm-eabi-"
++            ARM_CROSS_COMPILE:=CROSS_COMPILE="$(ccache) $(ANDROID_BUILD_TOP)/prebuilt/darwin-x86/toolchain/$(TARGET_KERNEL_CUSTOM_TOOLCHAIN)/bin/$(TARGET_KERNEL_CUSTOM_TOOLCHAIN_SUFFIX)-"
+         else
+-            ARM_CROSS_COMPILE:=CROSS_COMPILE="$(ccache) $(ANDROID_BUILD_TOP)/prebuilt/linux-x86/toolchain/$(TARGET_KERNEL_CUSTOM_TOOLCHAIN)/bin/arm-cortex_a8-linux-gnueabi-"
++            ARM_CROSS_COMPILE:=CROSS_COMPILE="$(ccache) $(ANDROID_BUILD_TOP)/prebuilt/linux-x86/toolchain/$(TARGET_KERNEL_CUSTOM_TOOLCHAIN)/bin/$(TARGET_KERNEL_CUSTOM_TOOLCHAIN_SUFFIX)-"
+         endif
+     else
+         ARM_CROSS_COMPILE:=CROSS_COMPILE="$(ccache) $(ARM_EABI_TOOLCHAIN)/arm-eabi-"
+-- 
+2.53.0
+

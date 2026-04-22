@@ -1,0 +1,29 @@
+From ae8d494aae913103d91eed1430f2ae3c8b977f4d Mon Sep 17 00:00:00 2001
+From: Sultanxda <sultanxda@gmail.com>
+Date: Mon, 17 Feb 2014 17:42:46 -0800
+Subject: [PATCH 1/2] venc: Disable ION when BOARD_USES_PMEM_ADSP is enabled
+
+Signed-off-by: Sultanxda <sultanxda@gmail.com>
+---
+ mm-video/vidc/venc/Android.mk | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/mm-video/vidc/venc/Android.mk b/mm-video/vidc/venc/Android.mk
+index 7c420c1..0b29178 100644
+--- a/mm-video/vidc/venc/Android.mk
++++ b/mm-video/vidc/venc/Android.mk
+@@ -36,9 +36,11 @@ endif
+ ifeq ($(TARGET_BOARD_PLATFORM),msm7x30)
+ libmm-venc-def += -DMAX_RES_720P
+ endif
++ifneq ($(BOARD_USES_PMEM_ADSP),true)
+ ifeq ($(TARGET_USES_ION),true)
+ libmm-venc-def += -DUSE_ION
+ endif
++endif
+ libmm-venc-def += -D_ANDROID_ICS_
+ # ---------------------------------------------------------------------------------
+ # 			Make the Shared library (libOmxVenc)
+-- 
+2.53.0
+

@@ -1,0 +1,32 @@
+From d32ec26da313fed81a586219a62b6feb722c0e9d Mon Sep 17 00:00:00 2001
+From: flintman <flintman@flintmancomputers.com>
+Date: Thu, 7 Nov 2013 19:50:06 -0500
+Subject: [PATCH 6/6] build:  Add USE_SET_METADATA tag
+
+On some of the older devices the recovery doesn't support
+metadata when setting permissions.  This allows to use
+set_perm vs set_metadata you will need to set
+USE_SET_METADATA := false inside your boardconfig.mk
+
+Change-Id: Ib6cf97b5ca28cee8a87975231f3a61b156e77d29
+---
+ core/Makefile | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/core/Makefile b/core/Makefile
+index eab68855..2c295882 100644
+--- a/core/Makefile
++++ b/core/Makefile
+@@ -1407,7 +1407,9 @@ ifdef PRODUCT_EXTRA_RECOVERY_KEYS
+ 	$(hide) echo "extra_recovery_keys=$(PRODUCT_EXTRA_RECOVERY_KEYS)" >> $(zip_root)/META/misc_info.txt
+ endif
+ 	$(hide) echo "mkbootimg_args=$(BOARD_MKBOOTIMG_ARGS)" >> $(zip_root)/META/misc_info.txt
++ifneq ($(USE_SET_METADATA),false)
+ 	$(hide) echo "use_set_metadata=1" >> $(zip_root)/META/misc_info.txt
++endif
+ 	$(hide) echo "multistage_support=1" >> $(zip_root)/META/misc_info.txt
+ 	$(hide) echo "update_rename_support=1" >> $(zip_root)/META/misc_info.txt
+ 	$(hide) echo "ota_script_path=$(OTA_FROM_TARGET_SCRIPT)" >> $(zip_root)/META/misc_info.txt
+-- 
+2.53.0
+
