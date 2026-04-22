@@ -20,7 +20,7 @@ git am --signoff < ~/holiday_patches/hardware_libhardware/0001-Revert-Revert-Add
 cd ../libhardware_legacy
 echo "Applying patches to hardware/libhardware_legacy"
 git am --signoff < ~/holiday_patches/hardware_libhardware_legacy/0001-Wimax-Squashed-commit-of-the-following.patch
-cd ../../qcom/display-caf
+cd ../qcom/display-caf
 echo "Applying patches to hardware/qcom/display-caf"
 git am --signoff < ~/holiday_patches/hardware_qcom_display-caf/0001-gralloc-Allow-legacy-devices-to-use-PMEM-for-ADSP-ca.patch
 git am --signoff < ~/holiday_patches/hardware_qcom_display-caf/0002-gralloc-our-prebuilt-camera-lib-needs-the-ADSP-heap-.patch
