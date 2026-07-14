@@ -31,3 +31,4 @@ git am --signoff < ~/holiday_patches/hardware_qcom_media-caf/0001-venc-Disable-I
 git am --signoff < ~/holiday_patches/hardware_qcom_media-caf/0002-venc-Fix-compilation-when-ION-is-disabled.patch
 cd ../../../prebuilt/linux-x86/toolchain/linaro-arm-cortex-a8
 git am --signoff < ~/holiday_patches/prebuilt_linux-x86_toolchain_linaro-arm-cortex-a8/0001-add-symlinks-for-arm-eabi.patch
+cd ../../../..
