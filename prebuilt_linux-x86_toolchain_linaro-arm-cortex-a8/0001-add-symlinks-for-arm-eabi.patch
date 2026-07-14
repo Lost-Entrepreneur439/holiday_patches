@@ -1,0 +1,42 @@
+From 59093518bc2a05ce0223b3426b011a79103acd1f Mon Sep 17 00:00:00 2001
+From: Evelyn Torres <lostentrepreneur439@yahoo.com>
+Date: Tue, 14 Jul 2026 18:30:54 -0230
+Subject: [PATCH] add symlinks for arm-eabi
+
+Change-Id: I66d806b054be837d87251a1a5411eeea76e13bbf
+---
+ bin/arm-eabi-ar  | 1 +
+ bin/arm-eabi-gcc | 1 +
+ bin/arm-eabi-ld  | 1 +
+ 3 files changed, 3 insertions(+)
+ create mode 120000 bin/arm-eabi-ar
+ create mode 120000 bin/arm-eabi-gcc
+ create mode 120000 bin/arm-eabi-ld
+
+diff --git a/bin/arm-eabi-ar b/bin/arm-eabi-ar
+new file mode 120000
+index 0000000..d0ab771
+--- /dev/null
++++ b/bin/arm-eabi-ar
+@@ -0,0 +1 @@
++arm-cortex_a8-linux-gnueabi-ar
+\ No newline at end of file
+diff --git a/bin/arm-eabi-gcc b/bin/arm-eabi-gcc
+new file mode 120000
+index 0000000..39ad014
+--- /dev/null
++++ b/bin/arm-eabi-gcc
+@@ -0,0 +1 @@
++arm-cortex_a8-linux-gnueabi-gcc
+\ No newline at end of file
+diff --git a/bin/arm-eabi-ld b/bin/arm-eabi-ld
+new file mode 120000
+index 0000000..2dd6dbd
+--- /dev/null
++++ b/bin/arm-eabi-ld
+@@ -0,0 +1 @@
++arm-cortex_a8-linux-gnueabi-ld
+\ No newline at end of file
+-- 
+2.53.0
+
